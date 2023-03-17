@@ -1,3 +1,2 @@
-from 
 import RPi.GPIO as GPIO
-from flask import flask
+from mfrc522 import SimpleMFRC522
