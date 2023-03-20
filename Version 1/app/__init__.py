@@ -1,4 +1,4 @@
-from app import application
+from MFRC522 import SimpleMFRC522
 
 #firebase access
 import firebase_admin

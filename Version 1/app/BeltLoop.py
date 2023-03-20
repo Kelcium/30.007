@@ -1,17 +1,24 @@
-import RPi.GPIO as GPIO
-from MFRC522 import MFRC522
+import functions
 import signal
 import time
-import functions
 
 #program called with RFID as arg
-kiosk = MFRC522.MFRC522()
+reader = SimpleMFRC522()
 GPIO.setmode(GPIO.Board)
 GPIO.setup({motorpin}, GPIO.OUT)
 GPIO.setup({laserpin}, GPIO.IN)
+tray_present = GPIO.input({laserpin})
 
-kiosk_reading = True
+kiosk_read = True
 
-collection = Passenger(db.collection('YanHan'))
+#connecting to Firestore, if init doesn't do it properly
+#db = firestore.client()
+
+#object of kiosk reader
+#kiosk_reader = MFRC522.MFRC522()
+print(db.collection('YanHan'))
+collection = Passenger(db.collection('YanHan').get())
 print(collection.name)
 print(collection.luggage_queue)
+
+

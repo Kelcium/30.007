@@ -1,4 +1,4 @@
-class Passenger(passenger):
+class Passenger:
 
     def __init__(self, passenger):
         self.luggage_queue = passenger.luggage
