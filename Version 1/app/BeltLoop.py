@@ -1,18 +1,17 @@
 import RPi.GPIO as GPIO
-From mf
+import MFRC522
+import signal
+import time
+import functions
 
 #program called with RFID as arg
-reader = SimpleMFRC522()
+kiosk = MFRC522.MFRC522()
 GPIO.setmode(GPIO.Board)
 GPIO.setup({motorpin}, GPIO.OUT)
 GPIO.setup({laserpin}, GPIO.IN)
 
-while True:
-    GPIO.output({motorpin}, GPIO.HIGH)
-    if GPIO.input({laserpin}):
-        GPIO.output({motorpin}, GPIO.LOW)
-        id, text = reader.read()
-        if id == arg:
-            break
-        else:
-            GPIO.output({motorpin}. GPIO.HIGH)
+kiosk_reading = True
+
+collection = Passenger(db.collection('YanHan'))
+print(collection.name)
+print(collection.luggage_queue)

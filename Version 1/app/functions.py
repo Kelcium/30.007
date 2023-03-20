@@ -1,12 +1,18 @@
-class passenger():
+class Passenger(passenger):
 
-    def __init__(self):
-        self.luggage_queue = []
+    def __init__(self, passenger):
+        self.luggage_queue = passenger.luggage
+        self.name = passenger.name
         pass
 
-    def is_empty(self, array):
-        if array == []:
-            return True
+    @property
+    def is_empty(self):
+        return self.luggage_queue == []
 
-    @luggage_queue.setter
-    def 
+    @property
+    def name(self):
+        return self.name
+
+    @property
+    def luggage_queue(self):
+        return self.luggage_queue
