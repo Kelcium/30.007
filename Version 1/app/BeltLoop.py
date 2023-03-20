@@ -1,9 +1,10 @@
+import RPi.GPIO as GPIO
 import functions
 import signal
 import time
 
 #program called with RFID as arg
-reader = SimpleMFRC522()
+# reader = SimpleMFRC522()
 GPIO.setmode(GPIO.Board)
 GPIO.setup({motorpin}, GPIO.OUT)
 GPIO.setup({laserpin}, GPIO.IN)
