@@ -1,5 +1,5 @@
 import RPi.GPIO as GPIO
-import MFRC522
+from MFRC522 import MFRC522
 import signal
 import time
 import functions
