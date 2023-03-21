@@ -22,5 +22,6 @@ while True:
                 #run storage file with passportnum as argument
         else:
                 print("No baggage to collect")
+        break
 
 
