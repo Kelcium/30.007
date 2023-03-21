@@ -32,7 +32,6 @@ reader = SimpleMFRC522()
 cred = credentials.Certificate(r"test-5b286-firebase-adminsdk-prj2f-ad65922631.json")
 firebase_admin.initialize_app(cred, {'databaseURL' : 'https://test-5b286-default-rtdb.asia-southeast1.firebasedatabase.app/'})
 ref = db.reference("/").get()
-passportnum = "Passport2"
 
 while True:
 
