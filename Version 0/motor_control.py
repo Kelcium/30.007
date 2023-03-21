@@ -32,12 +32,14 @@ def cleanup():
     GPIO.output( out3, GPIO.LOW )
     GPIO.output( out4, GPIO.LOW )
     GPIO.cleanup()
+    print("cleanup complete")
  
  
 # the meat
 try:
     i = 0
     for i in range(step_count):
+        print("running")
         if i%4==0:
             GPIO.output( out4, GPIO.HIGH )
             GPIO.output( out3, GPIO.LOW )
