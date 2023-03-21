@@ -15,11 +15,13 @@ while True:
 
         try:
                 id, passportnum = reader.read()
+                print(passportnum)
         finally:
                 GPIO.cleanup()
 
         if passportnum in ref.keys():
                 #run storage file with passportnum as argument
+                pass
         else:
                 print("No baggage to collect")
         break

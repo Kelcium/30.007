@@ -35,10 +35,11 @@ ref = db.reference("/").get()
 while True:
 
         try:
-                id, passportnum = reader.read()
+                id_, passportnum = reader.read()
+                passportnum = passportnum.strip()
         finally:
                 GPIO.cleanup()
-
+        
         if passportnum in ref.keys():
             if len(ref[passportnum]) > 1:
                 sorted_by_size = sorted(ref[passportnum], key=lambda x: x["Size"])[::-1]
