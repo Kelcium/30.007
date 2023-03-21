@@ -30,39 +30,44 @@ reader = SimpleMFRC522()
 
 cred = credentials.Certificate(r"test-5b286-firebase-adminsdk-prj2f-ad65922631.json")
 firebase_admin.initialize_app(cred, {'databaseURL' : 'https://test-5b286-default-rtdb.asia-southeast1.firebasedatabase.app/'})
-ref = db.reference("/").get()
+#ref = db.reference("/").get()
 
 while True:
-
+        ref = db.reference("/").get()
         try:
                 id_, passportnum = reader.read()
                 passportnum = passportnum.strip()
+                print(passportnum)
         finally:
                 GPIO.cleanup()
 
         not_dispensed = []
+        update_true = []
         if passportnum in ref.keys():
             for i in range(len(ref[passportnum])):
                 if ref[passportnum][i]["Dispensed"] == "False":
                     not_dispensed.append(ref[passportnum][i])
+                    update_true.append(i)
+            print(not_dispensed)
             if len(not_dispensed) == 0:
                     print("No baggage to collect")
             else:
                 sorted_by_size = sorted(not_dispensed, key=lambda x: x["Size"])[::-1]
                 for bag in sorted_by_size:
                     q.enqueue(bag)
-
-                count = 0
+                    
                 while q.size > 0:
 
                     if True:
                         bag = q.dequeue()
                         storage = bag["Storage"]
+                        print("Dispensing new luggage")
                         # ServoID[storage].open
+                        count = update_true.pop()
+                        print(ref[passportnum][count]["Dispensed"])
                         db.reference(f"/{passportnum}/{count}").update({"Dispensed" : "True"})
                         time.sleep(5)
                         # ServoID[storage].close
-                        count += 1
                     #run storage file with passportnum as argument
         else:
                 print("No baggage to collect")
