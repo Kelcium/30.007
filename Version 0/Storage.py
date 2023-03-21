@@ -45,25 +45,25 @@ while True:
             for i in range(len(ref[passportnum])):
                 if ref[passportnum][i]["Dispensed"] == "False":
                     not_dispensed.append(ref[passportnum][i])
-                if len(not_dispensed) == 0:
+            if len(not_dispensed) == 0:
                     print("No baggage to collect")
-                else:
-                    sorted_by_size = sorted(not_dispensed, key=lambda x: x["Size"])[::-1]
-                    for bag in sorted_by_size:
-                        q.enqueue(bag)
+            else:
+                sorted_by_size = sorted(not_dispensed, key=lambda x: x["Size"])[::-1]
+                for bag in sorted_by_size:
+                    q.enqueue(bag)
 
-                    count = 0
-                    while q.size > 0:
+                count = 0
+                while q.size > 0:
 
-                        if True:
-                            bag = q.dequeue()
-                            storage = bag["Storage"]
-                            # ServoID[storage].open
-                            db.reference(f"/{passportnum}/{count}").update({"Dispensed" : "True"})
-                            time.sleep(5)
-                            # ServoID[storage].close
-                            count += 1
-                        #run storage file with passportnum as argument
+                    if True:
+                        bag = q.dequeue()
+                        storage = bag["Storage"]
+                        # ServoID[storage].open
+                        db.reference(f"/{passportnum}/{count}").update({"Dispensed" : "True"})
+                        time.sleep(5)
+                        # ServoID[storage].close
+                        count += 1
+                    #run storage file with passportnum as argument
         else:
                 print("No baggage to collect")
 
