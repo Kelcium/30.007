@@ -9,23 +9,34 @@ ECHO = 24
 GPIO.setup(ECHO, GPIO.IN)
 
 print("Distance measurement in progress")
-while True:
-    GPIO.output(TRIG, False)
-    time.sleep(2)
 
-    GPIO.output(TRIG, True)
-    time.sleep(0.00001)
-    GPIO.output(TRIG, False)
+def distance():
+	GPIO.output(TRIG, True)
+	time.sleep(0.00001)
+	GPIO.output(TRIG, False)
 
-    while GPIO.input(ECHO) == 0:
-        start = time.time()
+	start = time.time()
+	end = time.time()
 
-    while GPIO.input(ECHO) == 1:
-        end = time.time()
+	while GPIO.input(ECHO) == 0:
+		start = time.time()
 
-    duration = end - start
-    dist = duration * 17500
-    dist = round(dist, 2)
-    print("Distance: ",dist,"cm")
+	while GPIO.input(ECHO) == 1:
+		end = time.time()
 
-    GPIO.cleanup()
+	duration = end - start
+	dist = round(duration * 17150, 2)
+	return dist
+	
+
+if __name__ == '__main__':
+    try:
+        while True:
+            dist = distance()
+            print ("Measured Distance = %.1f cm" % dist)
+            time.sleep(1)
+ 
+        # Reset by pressing CTRL + C
+    except KeyboardInterrupt:
+        print("Measurement stopped by User")
+        GPIO.cleanup()
