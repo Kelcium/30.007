@@ -31,7 +31,6 @@ reader = SimpleMFRC522()
 cred = credentials.Certificate(r"test-5b286-firebase-adminsdk-prj2f-ad65922631.json")
 firebase_admin.initialize_app(cred, {'databaseURL' : 'https://test-5b286-default-rtdb.asia-southeast1.firebasedatabase.app/'})
 ref = db.reference("/").get()
-passportnum = "Passport2"
 
 while True:
 
@@ -51,7 +50,6 @@ while True:
                 else:
                     sorted_by_size = sorted(not_dispensed, key=lambda x: x["Size"])[::-1]
                     for bag in sorted_by_size:
-                        print(bag)
                         q.enqueue(bag)
 
                     count = 0
@@ -61,8 +59,7 @@ while True:
                             bag = q.dequeue()
                             storage = bag["Storage"]
                             # ServoID[storage].open
-                            sorted_by_size[count]["Dispensed"] = "True"
-                            db.reference("/").update({passportnum: sorted_by_size})
+                            db.reference(f"/{passportnum}/{count}").update({"Dispensed" : "True"})
                             time.sleep(5)
                             # ServoID[storage].close
                             count += 1
