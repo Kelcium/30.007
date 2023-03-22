@@ -39,7 +39,7 @@ try:
 	while present == False:
 		dist = distance()
 		print ("Measured Distance = %.1f cm" % dist)
-		if dist < 2:
+		if dist < 5:
 			break
 		time.sleep(1)
 
