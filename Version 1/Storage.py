@@ -5,7 +5,7 @@ import time
 import RPi.GPIO as GPIO
 from mfrc522 import SimpleMFRC522
 from functions import Queue
-from ultrasonic import distance
+import ultrasonic
 
 q = Queue()
 reader = SimpleMFRC522()
@@ -44,7 +44,11 @@ while True:
                         bag = q.dequeue()
                         storage = bag["Storage"]
                         print("Dispensing new luggage")
-                        while
+                        while present == False:
+                            dist = distance()
+                            print("Measured Distance = %.1f cm" % dist)
+                            if dist < 5:
+                                break
                         # ServoID[storage].open
                         count = update_true.pop()
                         print(ref[passportnum][count]["Dispensed"])

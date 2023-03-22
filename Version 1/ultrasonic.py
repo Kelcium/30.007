@@ -29,19 +29,19 @@ def distance():
 
 	duration = end - start
 	dist = round(duration * 17150, 2)
-	if dist < 2:
+	if dist < 5:
 		present = True
 		return dist
 	return dist
 	
 
 try:
-	while present == False:
-		dist = distance()
-		print ("Measured Distance = %.1f cm" % dist)
-		if dist < 5:
-			break
-		time.sleep(1)
+	# while present == False:
+	# 	dist = distance()
+	# 	print ("Measured Distance = %.1f cm" % dist)
+	# 	if dist < 5:
+	# 		break
+	# 	time.sleep(1)
 
 	# Reset by pressing CTRL + C
 except KeyboardInterrupt:
