@@ -1,7 +1,4 @@
 import RPi.GPIO as GPIO
-import functions
-import signal
-import time
 
 #program called with RFID as arg
 # reader = SimpleMFRC522()
