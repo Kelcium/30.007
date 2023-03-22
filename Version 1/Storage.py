@@ -5,9 +5,13 @@ import time
 import RPi.GPIO as GPIO
 from mfrc522 import SimpleMFRC522
 from functions import Queue
-from ultrasonic import distance_check
+#from ultrasonic import distance_check
+import ultrasonic as us
+import motor_control as mc
+GPIO.setmode(GPIO.BCM)
 
 # ultrasound setup for belt
+
 
 q = Queue()
 reader = SimpleMFRC522()
@@ -46,11 +50,13 @@ while True:
                         bag = q.dequeue()
                         storage = bag["Storage"]
                         print("Dispensing new luggage")
-                        dist, present = distance_check()
+                        dist, present = us.distance_check()
                         while present == False:
-                            dist, present = distance_check()
-                            print("Measured Distance = %.1f cm" % dist)
+                            dist, present = us.distance_check()
+                            mc.belt_move(100)
                             if dist < 5:
+                                print("Measured Distance = %.1f cm" % dist)
+                                mc.belt_move(0)
                                 break
                         # ServoID[storage].open
                         count = update_true.pop()
