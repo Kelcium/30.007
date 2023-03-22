@@ -4,16 +4,17 @@ from firebase_admin import db
 import time
 import RPi.GPIO as GPIO
 from mfrc522 import SimpleMFRC522
-from functions import Queue
+import functions as f
+#from functions import Queue, belt_move, distance_check
 #from ultrasonic import distance_check
-import ultrasonic as us
-import motor_control as mc
+#import ultrasonic as us
+#import motor_control as mc
 GPIO.setmode(GPIO.BCM)
 
 # ultrasound setup for belt
 
 
-q = Queue()
+q = f.Queue()
 reader = SimpleMFRC522()
 
 cred = credentials.Certificate(r"test-5b286-firebase-adminsdk-prj2f-ad65922631.json")
@@ -50,13 +51,13 @@ while True:
                         bag = q.dequeue()
                         storage = bag["Storage"]
                         print("Dispensing new luggage")
-                        dist, present = us.distance_check()
+                        dist, present = f.distance_check()
                         while present == False:
-                            dist, present = us.distance_check()
-                            mc.belt_move(100)
+                            dist, present = f.distance_check()
+                            f.belt_move(100)
                             if dist < 5:
                                 print("Measured Distance = %.1f cm" % dist)
-                                mc.belt_move(0)
+                                f.belt_move(0)
                                 break
                         # ServoID[storage].open
                         count = update_true.pop()
@@ -64,7 +65,7 @@ while True:
                         db.reference(f"/{passportnum}/{count}").update({"Dispensed" : "True"})
                         time.sleep(5)
                         # ServoID[storage].close
-                    #run storage file with passportnum as argument
+                print("All luggage dispensed")
         else:
                 print("No baggage to collect")
 
