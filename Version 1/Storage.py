@@ -44,8 +44,9 @@ while True:
                         bag = q.dequeue()
                         storage = bag["Storage"]
                         print("Dispensing new luggage")
+                        dist, present = distance_check()
                         while present == False:
-                            dist = distance()
+                            dist, present = distance_check()
                             print("Measured Distance = %.1f cm" % dist)
                             if dist < 5:
                                 break

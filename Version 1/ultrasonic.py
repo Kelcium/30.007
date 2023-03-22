@@ -8,11 +8,9 @@ GPIO.setup(TRIG, GPIO.OUT)
 ECHO = 24
 GPIO.setup(ECHO, GPIO.IN)
 
-print("Distance measurement in progress")
-
 present = False
 
-def distance():
+def distance_check():
 	present = False
 	GPIO.output(TRIG, True)
 	time.sleep(0.00001)
@@ -30,9 +28,8 @@ def distance():
 	duration = end - start
 	dist = round(duration * 17150, 2)
 	if dist < 5:
-		present = True
-		return dist
-	return dist
+		return dist, True
+	return dist, False
 	
 
 # try:
