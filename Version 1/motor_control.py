@@ -31,4 +31,4 @@ def belt_move(x):
 	lpwm.start(0)
 	
 	rpwm.ChangeDutyCycle(x)
-	time.sleep(0.25)
+	time.sleep(0.1)

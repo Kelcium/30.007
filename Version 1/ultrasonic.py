@@ -25,22 +25,22 @@ def distance_check():
 	duration = end - start
 	dist = round(duration * 17150, 2)
 
-	if dist < 5:
+	if dist < 8:
 		return dist, True
 	return dist, False
 
 
-#try:
-#	present = False
-#	while present == False:
-#		dist, present = distance_check()
-#		print ("Measured Distance = %.1f cm" % dist)
-#		if dist < 5:
-#			break
-#		time.sleep(1)
+try:
+	present = False
+	while present == False:
+		dist, present = distance_check()
+		print ("Measured Distance = %.1f cm" % dist)
+		if dist < 5:
+			break
+		time.sleep(1)
 
 # 	 Reset by pressing CTRL + C
-#except KeyboardInterrupt:
-#	print("Measurement stopped by User")
+except KeyboardInterrupt:
+	print("Measurement stopped by User")
 
-#GPIO.cleanup()
+GPIO.cleanup()
