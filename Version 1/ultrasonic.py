@@ -2,11 +2,11 @@ import RPi.GPIO as GPIO
 import time
 GPIO.setmode(GPIO.BCM)
 
-# TRIG = 23
-# GPIO.setup(TRIG, GPIO.OUT)
-#
-# ECHO = 24
-# GPIO.setup(ECHO, GPIO.IN)
+TRIG = 23
+GPIO.setup(TRIG, GPIO.OUT)
+
+ECHO = 24
+GPIO.setup(ECHO, GPIO.IN)
 
 def distance_check():
 	present = False

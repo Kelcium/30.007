@@ -8,10 +8,6 @@ from functions import Queue
 from ultrasonic import distance_check
 
 # ultrasound setup for belt
-TRIG = 23
-GPIO.setup(TRIG, GPIO.OUT)
-ECHO = 24
-GPIO.setup(ECHO, GPIO.IN)
 
 q = Queue()
 reader = SimpleMFRC522()
