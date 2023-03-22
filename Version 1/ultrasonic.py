@@ -35,7 +35,7 @@ def distance():
 	return dist
 	
 
-try:
+# try:
 	# while present == False:
 	# 	dist = distance()
 	# 	print ("Measured Distance = %.1f cm" % dist)
@@ -43,7 +43,7 @@ try:
 	# 		break
 	# 	time.sleep(1)
 
-	# Reset by pressing CTRL + C
-except KeyboardInterrupt:
-	print("Measurement stopped by User")
-	GPIO.cleanup()
+# 	# Reset by pressing CTRL + C
+# except KeyboardInterrupt:
+# 	print("Measurement stopped by User")
+# 	GPIO.cleanup()
