@@ -18,6 +18,7 @@ firebase_admin.initialize_app(cred, {'databaseURL' : 'https://test-5b286-default
 while True:
         ref = db.reference("/").get()
         f.change_display("Please scan your passport!")
+        print("test proceed")
         id_, passportnum = nfc.RFID_kiosk("RFID_kiosk")
         print(passportnum)
         not_dispensed = []

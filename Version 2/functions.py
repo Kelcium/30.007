@@ -153,6 +153,7 @@ class NFC():
 
 def change_display(passport_id):
 	# First define some constants to allow easy resizing of shapes.
+	GPIO.setmode(GPIO.BCM)
 	BORDER = 20
 	FONTSIZE = 24
 
@@ -177,32 +178,35 @@ def change_display(passport_id):
 	else:
 		width = disp.width  # we swap height/width to rotate it to landscape!
 		height = disp.height
+	
+	try:
+		image = Image.new("RGB", (width, height))
 
-	image = Image.new("RGB", (width, height))
+		# Get drawing object to draw on image.
+		draw = ImageDraw.Draw(image)
 
-	# Get drawing object to draw on image.
-	draw = ImageDraw.Draw(image)
+		# Draw a green filled box as the background
+		draw.rectangle((0, 0, width, height), fill=(0, 255, 0))
+		disp.image(image)
 
-	# Draw a green filled box as the background
-	draw.rectangle((0, 0, width, height), fill=(0, 255, 0))
-	disp.image(image)
+		# Draw a smaller inner purple rectangle
+		draw.rectangle(
+			(BORDER, BORDER, width - BORDER - 1, height - BORDER - 1), fill=(170, 0, 136)
+		)
 
-	# Draw a smaller inner purple rectangle
-	draw.rectangle(
-		(BORDER, BORDER, width - BORDER - 1, height - BORDER - 1), fill=(170, 0, 136)
-	)
+		# Load a TTF Font
+		font = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf", FONTSIZE)
 
-	# Load a TTF Font
-	font = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf", FONTSIZE)
+		# Draw Some Text
+		(font_width, font_height) = font.getsize(passport_id)
+		draw.text(
+			(width // 2 - font_width // 2, height // 2 - font_height // 2),
+			passport_id,
+			font=font,
+			fill=(255, 255, 0),
+		)
 
-	# Draw Some Text
-	(font_width, font_height) = font.getsize(passport_id)
-	draw.text(
-		(width // 2 - font_width // 2, height // 2 - font_height // 2),
-		passport_id,
-		font=font,
-		fill=(255, 255, 0),
-	)
-
-	# Display image.
-	disp.image(image)
+		# Display image.
+		disp.image(image)
+	finally:
+		GPIO.cleanup()
