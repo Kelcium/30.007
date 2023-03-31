@@ -15,11 +15,13 @@ while True:
 
         try:
                 id, passportnum = reader.read()
+                passportnum = passportnum.strip()
                 print(passportnum)
         finally:
                 GPIO.cleanup()
 
         if passportnum in ref.keys():
+                print("ok lol")
                 #run storage file with passportnum as argument
                 pass
         else:
