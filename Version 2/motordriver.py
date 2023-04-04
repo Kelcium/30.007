@@ -1,148 +1,106 @@
-import RPi.GPIO as GPIO
-# https://sourceforge.net/p/raspberry-gpio-python/wiki/PWM/
-import time
-from mfrc522 import SimpleMFRC522
-import spidev
-
-class Queue():
-
-    def __init__(self):
-        self.__items = []
-
-    def enqueue(self, item):
-        self.__items.append(item)
-
-    def dequeue(self):
-        if self.size > 0:
-            return self.__items.pop(0)
-
-    def peek(self):
-        if self.size > 0:
-            return self.__items[0]
-
-    @property
-    def size(self):
-        return len(self.__items)
-
-def belt_move(x):
-	GPIO.setmode(GPIO.BCM)  
-	GPIO.setwarnings(False)
-
-	RPWM = 17;  # GPIO pin 17 to the RPWM on the BTS7960
-	LPWM = 18;  # GPIO pin 28 to the LPWM on the BTS7960
-
-	# For enabling "Left" and "Right" movement
-	L_EN = 27;  # connect GPIO pin 27 to L_EN on the BTS7960
-	R_EN = 22;  # connect GPIO pin 22 to R_EN on the BTS7960
-
-
-	# Set all of our PINS to output
-	GPIO.setup(RPWM, GPIO.OUT)
-	GPIO.setup(LPWM, GPIO.OUT)
-	GPIO.setup(L_EN, GPIO.OUT)
-	GPIO.setup(R_EN, GPIO.OUT)
-
-	# Enable "Left" and "Right" movement on the HBRidge
-	GPIO.output(R_EN, True)
-	GPIO.output(L_EN, True)
-	rpwm= GPIO.PWM(RPWM, 100)
-	lpwm= GPIO.PWM(LPWM, 100)
-	rpwm.start(0)
-	lpwm.start(0)
-	
-	rpwm.ChangeDutyCycle(x)
-	time.sleep(0.5)
-
-def distance_check():
-	GPIO.setmode(GPIO.BCM)
-	TRIG = 23
-	GPIO.setup(TRIG, GPIO.OUT)
-	ECHO = 24
-	GPIO.setup(ECHO, GPIO.IN)
-	
-	present = False
-	GPIO.output(TRIG, True)
-	time.sleep(0.00001)
-	GPIO.output(TRIG, False)
-
-	start = time.time()
-	end = time.time()
-
-	while GPIO.input(ECHO) == 0:
-		start = time.time()
-
-	while GPIO.input(ECHO) == 1:
-		end = time.time()
-
-	duration = end - start
-	dist = round(duration * 17150, 2)
-
-	if dist < 5:
-		return dist, True
-	return dist, False
-
-class NFC():
-    def __init__(self, bus=0, device=0, spd=1000000):
-        GPIO.setmode(GPIO.BCM)
-        self.reader = SimpleMFRC522()
-        self.close()
-        self.boards = {}
-        
-        self.bus = bus
-        self.device = device
-        self.spd = spd
-
-    def reinit(self):
-        self.reader.READER.spi = spidev.SpiDev()
-        self.reader.READER.spi.open(self.bus, self.device)
-        self.reader.READER.spi.max_speed_hz = self.spd
-        self.reader.READER.MFRC522_Init()
-
-    def close(self):
-        self.reader.READER.spi.close()
-
-    def addBoard(self, rid, pin):
-        GPIO.setup(pin, GPIO.OUT)
-        self.boards[rid] = pin
-
-    def selectBoard(self, rid):
-        GPIO.setmode(GPIO.BCM)
-        GPIO.setup(self.boards[rid], GPIO.OUT)
-        if not rid in self.boards:
-            print("readerid " + rid + " not found")
-            return False
-
-        for loop_id in self.boards:
-            GPIO.output(self.boards[loop_id], loop_id == rid)
-        return True
-
-#    def read(self, rid):
-#        if not self.selectBoard(rid):
-#            return None
+# Based on: https://www.raspberrypi.org/forums/viewtopic.php?t=242928\.
 #
-#        self.reinit()
-#        cid, val = self.reader.read_no_block()
-#        self.close()
+# Software to drive 4 wire stepper motor using a TB6600 Driver
+# PRi - RPi 3B
+#
+# Route 3.3 VDC to the controller "+" input for each: ENA, PUL, and DIR
+#
+# Connect GPIO pins as shown below) to the "-" input for each: ENA, PUL, and DIR
+#
+#
+from time import sleep
+import RPi.GPIO as GPIO
+#
+PUL = 17  # Stepper Drive Pulses
+DIR = 27  # Controller Direction Bit (High for Controller default / LOW to Force a Direction Change).
+ENA = 22  # Controller Enable Bit (High to Enable / LOW to Disable).
+# DIRI = 14  # Status Indicator LED - Direction
+# ENAI = 15  # Status indicator LED - Controller Enable
+#
+# NOTE: Leave DIR and ENA disconnected, and the controller WILL drive the motor in Default direction if PUL is applied.
+# 
+GPIO.setmode(GPIO.BCM)
+# GPIO.setmode(GPIO.BOARD) # Do NOT use GPIO.BOARD mode. Here for comparison only. 
+#
+GPIO.setup(PUL, GPIO.OUT)
+GPIO.setup(DIR, GPIO.OUT)
+GPIO.setup(ENA, GPIO.OUT)
+# GPIO.setup(DIRI, GPIO.OUT)
+# GPIO.setup(ENAI, GPIO.OUT)
+#
+print('PUL = GPIO 17 - RPi 3B-Pin #11')
+print('DIR = GPIO 27 - RPi 3B-Pin #13')
+print('ENA = GPIO 22 - RPi 3B-Pin #15')
+# print('ENAI = GPIO 14 - RPi 3B-Pin #8')
+# print('DIRI = GPIO 15 - RPi 3B-Pin #10')
 
-        return val
+#
+print('Initialization Completed')
+#
+# Could have usesd only one DURATION constant but chose two. This gives play options.
+durationFwd = 5000 # This is the duration of the motor spinning. used for forward direction
+durationBwd = 5000 # This is the duration of the motor spinning. used for reverse direction
+print('Duration Fwd set to ' + str(durationFwd))
+print('Duration Bwd set to ' + str(durationBwd))
+#
+delay = 0.0000001 # This is actualy a delay between PUL pulses - effectively sets the mtor rotation speed.
+print('Speed set to ' + str(delay))
+#
+cycles = 1000 # This is the number of cycles to be run once program is started.
+cyclecount = 0 # This is the iteration of cycles to be run once program is started.
+print('number of Cycles to Run set to ' + str(cycles))
+#
+#
+def forward():
+    GPIO.output(ENA, GPIO.HIGH)
+    #GPIO.output(ENAI, GPIO.HIGH)
+    print('ENA set to HIGH - Controller Enabled')
+    #
+    sleep(.5) # pause due to a possible change direction
+    GPIO.output(DIR, GPIO.LOW)
+    #GPIO.output(DIRI, GPIO.HIGH)
+    print('DIR set to HIGH - Moving Backward at ' + str(delay))
+    print('Controller PUL being driven.')
+    for y in range(durationFwd):
+        GPIO.output(PUL, GPIO.HIGH)
+        sleep(delay)
+        GPIO.output(PUL, GPIO.LOW)
+        sleep(delay)
+    GPIO.output(ENA, GPIO.LOW)
+    #GPIO.output(ENAI, GPIO.LOW)
+    print('ENA set to LOW - Controller Disabled')
+    sleep(.5) # pause for possible change direction
+    return
+#
+#
+def reverse():
+    GPIO.output(ENA, GPIO.HIGH)
+    #GPIO.output(ENAI, GPIO.HIGH)
+    print('ENA set to HIGH - Controller Enabled')
+    #
+    sleep(.5) # pause due to a possible change direction
+    GPIO.output(DIR, GPIO.HIGH)
+    #GPIO.output(DIRI, GPIO.HIGH)
+    print('DIR set to HIGH - Moving Backward at ' + str(delay))
+    print('Controller PUL being driven.')
+    for y in range(durationBwd):
+        GPIO.output(PUL, GPIO.HIGH)
+        sleep(delay)
+        GPIO.output(PUL, GPIO.LOW)
+        sleep(delay)
+    GPIO.output(ENA, GPIO.LOW)
+    #GPIO.output(ENAI, GPIO.LOW)
+    print('ENA set to LOW - Controller Disabled')
+    sleep(.5) # pause for possible change direction
+    return
 
-    def write(self, rid, value):
-        if not self.selectBoard(rid):
-            return False
-
-        self.reinit()
-        self.reader.write_no_block(value)
-        self.close()
-        return True
-
-    def RFID_kiosk(self, rid):
-        if not self.selectBoard(rid):
-            return None
-
-        self.reinit()
-        try:
-            id_, passportnum = self.reader.read()
-            passportnum = passportnum.strip()
-        finally:
-            GPIO.cleanup()
-            return id_, passportnum
+while cyclecount < cycles:
+    forward()
+    reverse()
+    cyclecount = (cyclecount + 1)
+    print('Number of cycles completed: ' + str(cyclecount))
+    print('Number of cycles remaining: ' + str(cycles - cyclecount))
+#
+GPIO.cleanup()
+print('Cycling Completed')
+#

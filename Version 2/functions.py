@@ -32,29 +32,26 @@ def belt_move(x):
 	GPIO.setmode(GPIO.BCM)  
 	GPIO.setwarnings(False)
 
-	RPWM = 17;  # GPIO pin 17 to the RPWM on the BTS7960
-	LPWM = 18;  # GPIO pin 28 to the LPWM on the BTS7960
-
-	# For enabling "Left" and "Right" movement
-	L_EN = 27;  # connect GPIO pin 27 to L_EN on the BTS7960
-	R_EN = 22;  # connect GPIO pin 22 to R_EN on the BTS7960
+	PUL = 17;  # GPIO pin 17 to the RPWM on the BTS7960
+	DIR = 27;  # GPIO pin 28 to the LPWM on the BTS7960
+	EN = 22;  # connect GPIO pin 27 to L_EN on the BTS796
 
 
 	# Set all of our PINS to output
-	GPIO.setup(RPWM, GPIO.OUT)
-	GPIO.setup(LPWM, GPIO.OUT)
-	GPIO.setup(L_EN, GPIO.OUT)
-	GPIO.setup(R_EN, GPIO.OUT)
+	GPIO.setup(PUL, GPIO.OUT)
+	GPIO.setup(DIR, GPIO.OUT)
+	GPIO.setup(EN, GPIO.OUT)
 
-	# Enable "Left" and "Right" movement on the HBRidge
-	GPIO.output(R_EN, True)
-	GPIO.output(L_EN, True)
-	rpwm= GPIO.PWM(RPWM, 100)
-	lpwm= GPIO.PWM(LPWM, 100)
-	rpwm.start(0)
-	lpwm.start(0)
+	GPIO.output(DIR, GPIO.HIGH)
+	GPIO.output(EN, GPIO.HIGH)
+
+	if x == 1:
+		GPIO.output(L_EN, GPIO.HIGH)
+		GPIO.PWM(PUL, 100)
 	
-	rpwm.ChangeDutyCycle(x)
+	if x == 0:
+		GPIO.output(L_EN, GPIO.LOW)
+	
 	time.sleep(0.5)
 
 def distance_check():
@@ -64,7 +61,6 @@ def distance_check():
 	ECHO = 24
 	GPIO.setup(ECHO, GPIO.IN)
 	
-	present = False
 	GPIO.output(TRIG, True)
 	time.sleep(0.00001)
 	GPIO.output(TRIG, False)
@@ -134,7 +130,6 @@ class NFC():
             return None
 
         self.reinit()
-        print("reinitialised")
         try:
             id_, passportnum = self.reader.read()
             passportnum = passportnum.strip()

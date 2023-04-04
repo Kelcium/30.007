@@ -6,12 +6,10 @@ import RPi.GPIO as GPIO
 #from mfrc522 import SimpleMFRC522
 import functions as f
 import ST7735
-import spidev
 
 GPIO.setwarnings(True)
 q = f.Queue()
 nfc = f.NFC()
-d = ST7735.ST7735(1, 24, 21, rst=20)
 nfc.addBoard("RFID_kiosk", 25)
 print(nfc.boards)
 cred = credentials.Certificate(r"test-5b286-firebase-adminsdk-prj2f-ad65922631.json")
@@ -20,13 +18,11 @@ firebase_admin.initialize_app(cred, {'databaseURL' : 'https://test-5b286-default
 
 while True:
         ref = db.reference("/").get()
-        #f.change_display("Please scan your passport!")
         id_, passportnum = nfc.RFID_kiosk("RFID_kiosk")
         print(passportnum)
         not_dispensed = []
         update_true = []
         if passportnum in ref.keys():
-            #f.change_display(passportnum)
             for i in range(len(ref[passportnum])):
                 if ref[passportnum][i]["Dispensed"] == "False":
                     not_dispensed.append(ref[passportnum][i])
@@ -49,10 +45,8 @@ while True:
                         dist, present = f.distance_check()
                         while present == False:
                             dist, present = f.distance_check()
-                            f.belt_move(100)
                             if dist < 8:
                                 print("Measured Distance = %.1f cm" % dist)
-                                f.belt_move(0)
                                 break
                         # ServoID[storage].open
                         count = update_true.pop()
@@ -61,8 +55,5 @@ while True:
                         time.sleep(5)
                         # ServoID[storage].close
                 print("All luggage dispensed")
-                #f.change_display("All luggage dispensed")
         else:
                 print("No baggage to collect")
-                #f.change_display("No baggage to dispense")
-
