@@ -42,12 +42,7 @@ while True:
                         bag = q.dequeue()
                         storage = bag["Storage"]
                         print("Dispensing new luggage")
-                        dist, present = f.distance_check()
-                        while present == False:
-                            dist, present = f.distance_check()
-                            if dist < 8:
-                                print("Measured Distance = %.1f cm" % dist)
-                                break
+                        f.belt_move()
                         # ServoID[storage].open
                         count = update_true.pop()
                         print(ref[passportnum][count]["Dispensed"])

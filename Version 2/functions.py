@@ -7,6 +7,7 @@ import digitalio
 import board
 from PIL import Image, ImageDraw, ImageFont
 import ST7735
+import time
 
 class Queue():
 
@@ -28,16 +29,17 @@ class Queue():
     def size(self):
         return len(self.__items)
 
-def belt_move(x):
-	GPIO.setmode(GPIO.BCM)  
+def belt_move():
+	GPIO.setmode(GPIO.BCM)
 	GPIO.setwarnings(False)
 
-	PUL = 17;  # GPIO pin 17 to the RPWM on the BTS7960
-	DIR = 27;  # GPIO pin 28 to the LPWM on the BTS7960
-	EN = 22;  # connect GPIO pin 27 to L_EN on the BTS796
+	PUL = 18  # GPIO pin 17 to the RPWM on the BTS7960
+	DIR = 27  # GPIO pin 28 to the LPWM on the BTS7960
+	EN = 22
 
 
 	# Set all of our PINS to output
+	
 	GPIO.setup(PUL, GPIO.OUT)
 	GPIO.setup(DIR, GPIO.OUT)
 	GPIO.setup(EN, GPIO.OUT)
@@ -45,14 +47,17 @@ def belt_move(x):
 	GPIO.output(DIR, GPIO.HIGH)
 	GPIO.output(EN, GPIO.HIGH)
 
-	if x == 1:
-		GPIO.output(L_EN, GPIO.HIGH)
-		GPIO.PWM(PUL, 100)
-	
-	if x == 0:
-		GPIO.output(L_EN, GPIO.LOW)
-	
-	time.sleep(0.5)
+	while True:
+		GPIO.output(PUL, GPIO.HIGH)
+		time.sleep(0.0001)
+		GPIO.output(PUL, GPIO.LOW)
+		time.sleep(0.0001)
+		dist, present = distance_check()
+		if dist < 8:
+			print("Measured Distance = %.1f cm" % dist)
+			GPIO.output(PUL, GPIO.LOW)
+			GPIO.cleanup()
+			break
 
 def distance_check():
 	GPIO.setmode(GPIO.BCM)
