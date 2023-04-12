@@ -11,13 +11,32 @@ GPIO.setwarnings(True)
 q = f.Queue()
 nfc = f.NFC()
 nfc.addBoard("RFID_kiosk", 25)
+#nfc.addBoard("Storage 1", 12)
+#nfc.addBoard("Storage 2", 13)
+#nfc.addBoard("Storage 3", 16)
+#nfc.addBoard("Storage Test", 25)
+#storage_id = ["Storage 1", "Storage 2", "Storage 3", "Storage Test"]
+#storage_id = ["Storage Test"]
+#storage_luggage = {}
+#nfc.addBoard("Elevator", 5)
+#for compartment in storage_id:
+#	print(compartment)
+#	id_, luggagenum = nfc.RFID_storage(compartment)
+#	if luggagenum == None:
+#		print("Compartment Empty!")
+#	else:
+#		storage_luggage[id_] = luggagenum
+#		f.data_edit(compartment, id_)
+
+#print(storage_luggage)
 print(nfc.boards)
-cred = credentials.Certificate(r"test-5b286-firebase-adminsdk-prj2f-ad65922631.json")
-firebase_admin.initialize_app(cred, {'databaseURL' : 'https://test-5b286-default-rtdb.asia-southeast1.firebasedatabase.app/'})
+#f.Arduino("Initialising!")
+f.SetDB()
 #ref = db.reference("/").get()
 
 while True:
         ref = db.reference("/").get()
+#        f.Arduino("Please scan passport!")
         id_, passportnum = nfc.RFID_kiosk("RFID_kiosk")
         print(passportnum)
         not_dispensed = []
@@ -29,7 +48,7 @@ while True:
                     update_true.append(i)
             print(not_dispensed)
             if len(not_dispensed) == 0:
-                    print("No baggage to collect")
+                    print("No baggage to collect!")
                     pass
             else:
                 sorted_by_size = sorted(not_dispensed, key=lambda x: x["Size"])[::-1]
@@ -46,6 +65,7 @@ while True:
                         f.servo_control(storage, True)
                         dist, present = f.distance_check(23, 24)
                         while present == False:
+#                            f.Arduino("Dispensing")
                             f.belt_move(1)
                             dist, present = f.distance_check(23, 24)
                         f.belt_move(0)
@@ -56,3 +76,4 @@ while True:
                 print("All luggage dispensed")
         else:
                 print("No baggage to collect")
+                f.Arduino("Please hold!")

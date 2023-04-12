@@ -20,6 +20,6 @@ GPIO.output(EN, GPIO.HIGH)
 
 while True:
 		GPIO.output(PUL, GPIO.HIGH)
-		sleep(0.001)
+		sleep(0.0005)
 		GPIO.output(PUL, GPIO.LOW)
-		sleep(0.001)
+		sleep(0.0005)

@@ -10,6 +10,11 @@ from PIL import Image, ImageDraw, ImageFont
 import ST7735
 import time
 from threading import Thread
+import serial
+import firebase_admin
+from firebase_admin import credentials
+from firebase_admin import db
+import json
 
 class Queue():
 
@@ -84,6 +89,16 @@ def distance_check(TRIG, ECHO):
 		print("The measured distance is ", dist, " !")
 		return dist, True
 	return dist, False
+	
+def laser_check(INPUT):
+	print("Checking lasers!")
+	GPIO.setmode(GPIO.BCM)
+	GPIO.setup(INPUT, GPIO.IN)
+	
+	while GPIO.input(INPUT) == 0:
+		return False
+	
+	return True
 
 def servo_control(LuggageNo, Open=False):
 	GPIO.setmode(GPIO.BCM)
@@ -169,3 +184,59 @@ class NFC():
         finally:
             GPIO.cleanup()
             return id_, passportnum
+            
+    def RFID_storage(self, rid):
+        if not self.selectBoard(rid):
+            return None
+		
+        self.reinit()
+        try:
+            id_, luggagenum = self.reader.read()
+            luggagenum = luggagenum.strip()
+        finally:
+            GPIO.cleanup()
+            return id_, luggagenum
+	
+    def RFID_elevator(self, rid):
+        if not self.selectboard(rid):
+            return None
+		
+        self.reinit()
+        try:
+            id_, compartment = self.reader.read()
+            compartment = compartment.strip()
+        finally:
+            GPIO.cleanup()
+            return compartment
+
+def data_edit(compartment, id_):
+	with open("test 1.json", "r") as testfile:
+		data = json.load(testfile)
+	
+	for passport in data.keys():
+		print(passport)
+		for luggage in data[passport]:
+			if luggage["Tray RFID"] == id_:
+				luggage["Storage"] = compartment
+				print(compartment)
+				
+	print(data)
+			
+	with open("test 1.json", "w") as testfile:
+		json.dump(data, testfile)
+		print("Database updated!")
+
+def SetDB():
+	cred = credentials.Certificate(r"test-5b286-firebase-adminsdk-prj2f-ad65922631.json")
+	firebase_admin.initialize_app(cred, {'databaseURL' : 'https://test-5b286-default-rtdb.asia-southeast1.firebasedatabase.app/'})
+	ref = db.reference("/")
+	with open(r"test.json", "r") as f:
+		file_contents = json.load(f)
+	ref.set(file_contents)
+
+def Arduino(text):
+	ser = serial.Serial('/dev/ttyACM0', 9600, timeout=1)
+	ser.reset_input_buffer()
+	ser.write(text.encode())
+	print(text)
+	time.sleep(1)
