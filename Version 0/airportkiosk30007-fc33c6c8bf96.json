@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "airportkiosk30007",
+  "private_key_id": "fc33c6c8bf965ce05fa581602ff2f117862c6fc2",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQDM0Lv7esNTicrJ\ncw3gHqhzBepGBmpdGf3Sz/oix5GFU3UzOPdxmsAcGnY+PNSRuNX01sCfe0is/EhU\nq8YIVaaHShh08FrxNopLoYOwz7GVfKQiabpbjGsWnlsBgfDuIWsN2+BCf51O/0N9\nXkYscFcIO/lz+v01RxjKj9DniwXA/JsSkY9RXx07FNyuVW0i4FjKEMT3eU9+PvQH\n9Fl3fpyiLjwGSzop8tGxmJ7yM7BGpQ+va/e0LkBsREB1fe0OvNoqYHEfeS08jRBT\n+1RLJ8N3qEIIYoS6o+BDVUuCFE24+btaOFLvGgcfXxm6dUtALHwlibxEeB8gRGHg\ngLqu68FtAgMBAAECggEANKBnxPDg0ozD0ephxNYr005QSYjpeJ2uliYBcEFWN2tf\n4HcBQawRM8dq3YgU2JKlS0GJAhGT9XrnfPYcLtUPMpEL4rRFsdghRdis9VgQmcgK\nhpsjGtXkSE4NNUB1r0Jf9xIpt/yBZ6R4a3S3VEDTZBbA/JefyzpG+PlmJLCYnGL2\nHFVmjUgwYygTte/taP3nTTeWCvvpuNmphzja2nsB9tprieCjde3A1fZBJ/cBNqUw\nPlkKURF4bi2ow8tmTdux6dGXQaLOfoW6Peg7roHg+fq4cYDa8mU3Nqq21/SUcYmB\nDS1ThjOoTZaK5XVO1YR/wmuO0oBIdocOj5QespbdYwKBgQDsQQHyiEmlm7VWJex2\npnIIrUB3gxW8NwDzphLijcnCVC/DHGsdHLq0RD/ExtAT4ax4NIIAVcYvdgceOFJK\nUkffXoIEFTVyQN2UIzJy9AVXfDhZql8h3J5yTUqkaQAgcC/T8r/qB71W32A+sT2+\nm+2Qv6qiN5BXha0JjTOXpgSKSwKBgQDd7w2qG4mp88jlIRe9LpkDCtqTTQAWhhcp\nTR23xrhpM4dLjYasQ62pwbvkzNnQaDAW76QQORSTMMgdUGgSNgmrdIA5MlZGeZSU\nnmLsn9yRNwMc/J1k9h1NnL59IRlmgwWnyYUQC6uM9DjE6qRXL2ctwebWCMDoZ+Qb\norNQtQIQJwKBgQCpHN+H/Ia7RPpI8FyTkhGOpHXBFtQ4JidIQVjDUztZH2oRAAas\nkCQVZcU/1hCcKq6KXQuxsbRrxNDTkP1Wtg88lSn8QjI/1q7Fm2xBXOt19DVh+dKf\nKo1AxJLpnT+5+JRD4z/9Bg1CYiNCvRy1lGg5dPlvpNZt0AJNFAYaR3x4gQKBgBzM\nQEGqgRqEf7T7rlDmEwTKC8LBYxmJHMhHMWv/ZT6BaTTskGUaAxbcBL2Tt0/LtTHE\nts1EGt9enRjwrhBu4qJU466IUZmjfRwr0TpTJBPTx5ujS+kl5neDt1QVT2514e37\nwEBswz3vEs66g8isZf8SAhoT2LRPhtHvMsVuN25RAoGAbKF7CjpVVhEg5/jCd8rb\npTvwKH8N/vh9KAZI/AIxftCnYFURbG0GdLwAPRBW2Rsvaqrp1S7+wO10bJ3sfnwR\nSItT3tt6vEJwf8Re0iU3nEdnjbeBXYI7Dy0Lmee0ZyrkR9Ff+Rg0ZBS5rkSqrvHE\nrUtIraumd/5ICtX7R7MeOHc=\n-----END PRIVATE KEY-----\n",
+  "client_email": "firebase-adminsdk-gt6lx@airportkiosk30007.iam.gserviceaccount.com",
+  "client_id": "112375893375854082949",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-gt6lx%40airportkiosk30007.iam.gserviceaccount.com"
+}

@@ -1,8 +1,6 @@
 import RPi.GPIO as GPIO
 import time
 
-GPIO.setmode(GPIO.BCM)
-
 TRIG = 23
 GPIO.setup(TRIG, GPIO.OUT)
 ECHO = 24
@@ -26,3 +24,4 @@ while True:
 		dist = round(duration * 17150, 2)
 		if dist < 8:
 			print("Measured Distance = %.1f cm" % dist)
+			

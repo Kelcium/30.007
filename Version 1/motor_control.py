@@ -6,12 +6,12 @@ def belt_move(x):
 	GPIO.setmode(GPIO.BCM)  
 	GPIO.setwarnings(False)
 
-	RPWM = 17;  # GPIO pin 17 to the RPWM on the BTS7960
-	LPWM = 18;  # GPIO pin 28 to the LPWM on the BTS7960
+	RPWM = 14;  # GPIO pin 17 to the RPWM on the BTS7960
+	LPWM = 15;  # GPIO pin 28 to the LPWM on the BTS7960
 
 	# For enabling "Left" and "Right" movement
-	L_EN = 27;  # connect GPIO pin 27 to L_EN on the BTS7960
-	R_EN = 22;  # connect GPIO pin 22 to R_EN on the BTS7960
+	L_EN = 3;  # connect GPIO pin 27 to L_EN on the BTS7960
+	R_EN = 2;  # connect GPIO pin 22 to R_EN on the BTS7960
 
 
 	# Set all of our PINS to output
