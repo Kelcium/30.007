@@ -455,6 +455,9 @@ def SetDB():
 def Arduino(text):
 	ser = serial.Serial('/dev/ttyACM0', 9600, timeout=1)
 	ser.reset_input_buffer()
-	ser.write(text.encode())
-	print(text)
+	line = ""
+	while line == "":
+		print(text)
+		ser.write(text.encode())
+		line = ser.readline().decode('utf-8').rstrip()
 

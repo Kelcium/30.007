@@ -1,8 +1,8 @@
 from gpiozero import Servo
 from time import sleep
 
-servo = Servo(19)
-servo_in = Servo(5)
+servo = Servo(21)
+servo_in = Servo(7)
 val = 1
 val_in = -1
 

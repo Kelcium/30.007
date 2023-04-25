@@ -5,9 +5,9 @@ GPIO.setmode(GPIO.BCM)
 GPIO.setwarnings(False)
 
 #PUL = 18  #main
-#PUL = 17 #drop
+PUL = 17 #drop
 #PUL = 4  #sub
-PUL = 22 #elevator
+#PUL = 22 #elevator
 DIR = 27
 
 GPIO.setup(PUL, GPIO.OUT)
